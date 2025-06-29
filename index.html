@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Oracle: Giải Mã Gen Năng Lực 2030</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a1a; color: #e0e0e0; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .cosmic-background { background: linear-gradient(-45deg, #0a0a1a, #1a0a2a, #0a1a2a, #2a0a1a); background-size: 400% 400%; animation: gradientBG 20s ease infinite; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        #stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .star { position: absolute; background-color: white; border-radius: 50%; animation: twinkle linear infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        .cta-button { background: linear-gradient(90deg, #6b21a8, #0891b2); box-shadow: 0 0 15px #6b21a8, 0 0 25px #0891b2; transition: all 0.3s ease-in-out; }
+        .cta-button:hover:not(:disabled) { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 25px #6b21a8, 0 0 40px #0891b2; }
+        .cta-button:disabled { background: #374151; box-shadow: none; cursor: not-allowed; opacity: 0.5; }
+        .input-field { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(192, 132, 252, 0.3); }
+        .input-field:focus { outline: none; border-color: #0891b2; box-shadow: 0 0 10px #0891b2; }
+        .input-field.error { border-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+        .progress-bar-inner { background: linear-gradient(90deg, #6b21a8, #0891b2); box-shadow: 0 0 10px #0891b2; transition: width 0.5s ease-in-out; }
+        .weight-slider { -webkit-appearance: none; appearance: none; width: 60%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none; transition: opacity .2s; }
+        .weight-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: #0891b2; cursor: pointer; border-radius: 50%; border: 3px solid #0a0a1a; box-shadow: 0 0 10px #0891b2, 0 0 5px #c084fc; }
+        .weight-slider::-moz-range-thumb { width: 22px; height: 22px; background: #0891b2; cursor: pointer; border-radius: 50%; border: 3px solid #0a0a1a; box-shadow: 0 0 10px #0891b2, 0 0 5px #c084fc; }
+        .processing-animation { width: 150px; height: 150px; position: relative; }
+        .processing-animation .dot { position: absolute; width: 10px; height: 10px; background: #0891b2; border-radius: 50%; animation: orbit 4s linear infinite; }
+        .processing-animation .dot:nth-child(2) { animation-delay: -0.5s; background: #6b21a8; }
+        .processing-animation .dot:nth-child(3) { animation-delay: -1s; background: #c084fc; }
+        .processing-animation .core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: radial-gradient(circle, #c084fc, transparent); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes orbit { 0% { transform: rotate(0deg) translateX(70px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(70px) rotate(-360deg); } }
+        @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.7); } 70% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 10px 20px rgba(192, 132, 252, 0); } 100% { transform: translate(-50%, -50%) scale(0.8); box-shadow: 0 0 0 0 rgba(192, 132, 252, 0); } }
+        .result-card { background: rgba(17, 24, 39, 0.6); border: 1px solid; border-image-source: linear-gradient(to right, #6b21a8, #0891b2); border-image-slice: 1; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-card-header { border-bottom: 1px solid; border-image-source: linear-gradient(to right, #6b21a8, #0891b2); border-image-slice: 1; }
+        .alert-modal { animation: fadeIn 0.3s ease-out; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <div class="cosmic-background"></div>
+    <div id="stars-container"></div>
+
+    <div id="main-container" class="relative min-h-screen flex items-center justify-center p-4">
+
+        <div id="welcomeScreen" class="text-center transition-opacity duration-500">
+            <h1 class="font-orbitron text-5xl md:text-7xl font-bold text-white tracking-widest">AI ORACLE</h1>
+            <p class="mt-4 text-lg md:text-xl text-purple-300 max-w-md mx-auto">Lắng nghe những rung cảm của vũ trụ. Giải mã chòm sao năng lực ẩn giấu bên trong bạn.</p>
+            <button id="startButton" class="cta-button text-white font-bold py-3 px-8 rounded-full mt-10 text-xl tracking-wider">
+                Bắt đầu Giải mã
+            </button>
+        </div>
+
+        <div id="inputScreen" class="hidden w-full max-w-2xl mx-auto transition-opacity duration-500">
+            <div class="w-full bg-gray-700 rounded-full h-2.5 mb-8">
+                <div id="progressBar" class="progress-bar-inner h-2.5 rounded-full" style="width: 33%"></div>
+            </div>
+            
+            <div id="input-steps">
+                <!-- All steps are generated dynamically -->
+            </div>
+        </div>
+
+        <div id="processingScreen" class="hidden text-center transition-opacity duration-500">
+             <div class="processing-animation mx-auto">
+                <div class="core"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <p id="processingText" class="mt-8 text-xl text-purple-300 animate-pulse"></p>
+        </div>
+
+        <div id="resultScreen" class="hidden w-full max-w-md mx-auto transition-opacity duration-500">
+            <div class="result-card rounded-2xl p-6 md:p-8 space-y-6">
+                <div class="result-card-header text-center pb-4">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold text-white tracking-wider" id="resultConstellation"></h2>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-cyan-300 mb-2">NĂNG LỰC TỎA SÁNG</h3>
+                    <div class="space-y-3" id="resultAbilities"></div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-cyan-300 mb-2">SỨ MỆNH TƯƠNG LAI GỢI Ý</h3>
+                    <p class="text-gray-300" id="resultMission"></p>
+                </div>
+                <div class="border-t border-purple-800 pt-4 mt-4">
+                     <p class="text-center text-purple-300 italic">" <span id="resultQuote"></span> "</p>
+                </div>
+            </div>
+            <div class="flex justify-center space-x-4 mt-8">
+                <button id="shareButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full transition-colors">Chia sẻ Kết quả</button>
+                <button id="retryButton" class="cta-button text-white font-bold py-3 px-6 rounded-full">Thử lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- CONFIGURATION & STATE ---
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const inputScreen = document.getElementById('inputScreen');
+            const processingScreen = document.getElementById('processingScreen');
+            const resultScreen = document.getElementById('resultScreen');
+            const startButton = document.getElementById('startButton');
+            const retryButton = document.getElementById('retryButton');
+            const shareButton = document.getElementById('shareButton');
+            const progressBar = document.getElementById('progressBar');
+            const inputStepsContainer = document.getElementById('input-steps');
+            const processingText = document.getElementById('processingText');
+            
+            let currentStep = 0;
+            let isProcessing = false;
+
+            const STEPS_DATA = [
+                { title: "Nguồn Năng Lượng của bạn là gì?", subtitle: "Điều gì khiến bạn hứng thú và tràn đầy năng lượng? Hãy cho Oracle 3 từ khóa.", placeholders: ["Sáng tạo", "Giúp đỡ người khác", "Giải đố"] },
+                { title: "Tài năng Thiên bẩm của bạn?", subtitle: "Bạn giỏi việc gì nhất mà không cần cố gắng nhiều? Hãy cho Oracle biết.", placeholders: ["Lắng nghe", "Phân tích vấn đề", "Kể chuyện"] },
+                { title: "Ước mơ của bạn là gì?", subtitle: "Bạn muốn tạo ra ảnh hưởng gì cho thế giới? Hãy chia sẻ với Oracle.", placeholders: ["Xây dựng cộng đồng", "Đổi mới giáo dục", "Bảo vệ môi trường"] }
+            ];
+
+            // --- UI & DYNAMIC ELEMENTS ---
+            function createStarryNight() {
+                const starsContainer = document.getElementById('stars-container');
+                if (!starsContainer) return;
+                starsContainer.innerHTML = '';
+                const numStars = 100;
+                for (let i = 0; i < numStars; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = Math.random() * 2 + 1;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    star.style.animationDelay = `${Math.random() * 3}s`;
+                    starsContainer.appendChild(star);
+                }
+            }
+
+            function buildInputSteps() {
+                inputStepsContainer.innerHTML = '';
+                STEPS_DATA.forEach((step, index) => {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.id = `step${index + 1}`;
+                    stepDiv.className = `space-y-6 ${index > 0 ? 'hidden' : ''}`;
+                    
+                    let inputsHTML = '';
+                    step.placeholders.forEach(placeholder => {
+                        inputsHTML += `
+                            <div class="input-group bg-white/5 p-4 rounded-lg">
+                                <input type="text" placeholder="${placeholder}" class="input-field w-full p-3 rounded-lg text-white mb-3">
+                                <div class="slider-container flex items-center justify-center mt-2 space-x-4">
+                                    <span class="text-gray-400">1</span>
+                                    <input type="range" min="1" max="5" value="3" class="weight-slider">
+                                    <span class="text-gray-400">5</span>
+                                    <span class="slider-value font-orbitron text-lg text-cyan-300 w-4 text-center">3</span>
+                                </div>
+                            </div>`;
+                    });
+
+                    const isLastStep = index === STEPS_DATA.length - 1;
+                    const buttonHTML = isLastStep
+                        ? `<button id="submitButton" class="cta-button text-white font-bold py-3 px-8 rounded-full mt-6 text-lg">Gửi cho Oracle</button>`
+                        : `<button class="next-step-btn cta-button text-white font-bold py-3 px-8 rounded-full mt-6 text-lg">Tiếp theo</button>`;
+
+                    stepDiv.innerHTML = `
+                        <h2 class="text-2xl md:text-3xl font-bold text-center text-cyan-300">${step.title}</h2>
+                        <p class="text-center text-gray-400">${step.subtitle}</p>
+                        <div class="space-y-4">${inputsHTML}</div>
+                        <div class="text-center">${buttonHTML}</div>
+                    `;
+                    inputStepsContainer.appendChild(stepDiv);
+                });
+                
+                // Re-bind events after building DOM
+                bindDynamicEvents();
+            }
+            
+            // --- CONTENT MODERATION ---
+            function isGibberish(text) {
+                const lowerText = text.toLowerCase();
+                if (lowerText.length < 3) return false;
+                if (/(.)\1{3,}/.test(lowerText)) return true; // e.g., 'aaaaa'
+                if (/(..)\1{2,}/.test(lowerText)) return true; // e.g., 'asdasdasd'
+                const vowels = 'aeiouyáàảãạăằắẳẵặâầấẩẫậéèẻẽẹêềếểễệíìỉĩịóòỏõọôồốổỗộơờớởỡợúùủũụưừứửữự';
+                if (new RegExp(`[^${vowels}]{6,}`, 'i').test(lowerText)) return true;
+                const vowelCount = (lowerText.match(new RegExp(`[${vowels}]`, 'gi')) || []).length;
+                const consonantCount = (lowerText.match(new RegExp(`[^${vowels}\\s\\d\\W_]`, 'gi')) || []).length;
+                if (vowelCount === 0 && consonantCount > 2) return true;
+                if (vowelCount > 0 && consonantCount / vowelCount > 5) return true;
+                return false;
+            }
+
+            function moderateContent(text) {
+                const lowerText = text.toLowerCase().replace(/\s/g, '');
+                const blocklist = [
+                    'dkm', 'đkm', 'vcl', 'đm', 'dm', 'cặc', 'lồn', 'fuck', 'shit', 'bitch', 'cunt', 'địt', 'ngu', 'dởm',
+                    'đụ', 'má', 'ml', 'lìn', 'cứt', 'óc chó', 'đần', 'dcm', 'vl', 'cl', 'cc', 'loz', 'buồi',
+                    'ditme', 'duma', 'chó', 'đẻ', 'súc vật'
+                ];
+                if (blocklist.some(word => lowerText.includes(word))) {
+                    return { isValid: false, message: "Oracle không thể xử lý những từ khóa này. Vui lòng thử lại với những ý tưởng tích cực và rõ ràng hơn." };
+                }
+                if (isGibberish(lowerText)) {
+                     return { isValid: false, message: "Oracle cảm thấy có những từ khóa chưa rõ nghĩa. Hãy thử lại với những từ khóa cụ thể hơn." };
+                }
+                return { isValid: true };
+            }
+
+            // --- APP LOGIC & FLOW ---
+            function showAlert(message) {
+                const modal = document.createElement('div');
+                modal.className = 'alert-modal fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50';
+                modal.innerHTML = `<div class="bg-gray-800 border border-red-500 rounded-lg p-6 text-center shadow-lg max-w-sm"><p class="text-white text-lg">${message}</p><button class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">Đã hiểu</button></div>`;
+                modal.querySelector('button').onclick = () => document.body.removeChild(modal);
+                document.body.appendChild(modal);
+            }
+            
+            function showScreen(screenToShow) {
+                [welcomeScreen, inputScreen, processingScreen, resultScreen].forEach(screen => {
+                    screen.classList.add('hidden', 'opacity-0');
+                });
+                screenToShow.classList.remove('hidden');
+                setTimeout(() => screenToShow.classList.remove('opacity-0'), 50);
+            }
+            
+            function resetApp() {
+                buildInputSteps();
+                currentStep = 0;
+                isProcessing = false;
+                progressBar.style.width = `${100 / STEPS_DATA.length}%`;
+            }
+
+            function validateCurrentStep() {
+                const currentStepElement = document.getElementById(`step${currentStep + 1}`);
+                const inputs = currentStepElement.querySelectorAll('.input-field');
+                let allValid = true;
+                let finalMessage = 'Vui lòng điền đầy đủ 3 từ khóa cho bước này.';
+
+                for (const input of inputs) {
+                    const value = input.value.trim();
+                    input.classList.remove('error');
+                    if (value === '') {
+                        allValid = false;
+                        finalMessage = 'Vui lòng điền đầy đủ 3 từ khóa cho bước này.';
+                        input.classList.add('error');
+                        break;
+                    }
+                    const moderationResult = moderateContent(value);
+                    if (!moderationResult.isValid) {
+                        allValid = false;
+                        finalMessage = moderationResult.message;
+                        input.classList.add('error');
+                        break; 
+                    }
+                }
+                if (!allValid) showAlert(finalMessage);
+                return allValid;
+            }
+
+            function goToStep(stepIndex) {
+                document.querySelectorAll('#input-steps > div').forEach(step => step.classList.add('hidden'));
+                document.getElementById(`step${stepIndex + 1}`).classList.remove('hidden');
+                progressBar.style.width = `${((stepIndex + 1) / STEPS_DATA.length) * 100}%`;
+                currentStep = stepIndex;
+            }
+
+            function generateOracleResult() {
+                const archetypes = [
+                    { constellation: "Người Kiến Tạo", abilities: [{ name: "Tư Duy Hệ Thống", icon: "🧠" }, { name: "Kiến Trúc Tương Lai", icon: "🏗️" }], mission: "Sứ mệnh của bạn là xây dựng những hệ thống, quy trình và sản phẩm đột phá, tạo ra nền tảng vững chắc cho sự phát triển của cộng đồng và xã hội.", quote: "Tương lai không phải là thứ để dự đoán, mà là thứ để tạo ra." },
+                    { constellation: "Người Truyền Cảm Hứng", abilities: [{ name: "Kết Nối Cảm Xúc", icon: "❤️" }, { name: "Kể Chuyện Lôi Cuốn", icon: "🎤" }], mission: "Bạn mang trong mình ngọn lửa lan tỏa tri thức và đam mê. Sứ mệnh của bạn là thắp sáng con đường cho người khác, giúp họ tìm thấy tiếng nói và sức mạnh của riêng mình.", quote: "Một ngọn nến có thể thắp sáng hàng ngàn ngọn nến khác." },
+                    { constellation: "Người Khai Phá", abilities: [{ name: "Can Đảm Thử Nghiệm", icon: "🚀" }, { name: "Tư Duy Phản Biện", icon: "🔍" }], mission: "Bạn là người tiên phong, không ngại dấn thân vào những vùng đất chưa ai biết tới. Sứ mệnh của bạn là khám phá những giới hạn mới, thách thức những định kiến và mở ra những kỷ nguyên mới.", quote: "Con tàu an toàn nhất khi ở trong cảng, nhưng đó không phải là lý do tàu được đóng." },
+                    { constellation: "Người Chữa Lành", abilities: [{ name: "Thấu Cảm Sâu Sắc", icon: "💖" }, { name: "Tạo Dựng Sự Hài Hòa", icon: "🌿" }], mission: "Bạn có khả năng hàn gắn những rạn nứt, cả trong tâm hồn con người lẫn trong các mối quan hệ. Sứ mệnh của bạn là mang lại sự bình yên, cân bằng và vun đắp một thế giới giàu lòng trắc ẩn.", quote: "Lòng tốt là ngôn ngữ mà người điếc có thể nghe và người mù có thể thấy." }
+                ];
+                const randomResult = archetypes[Math.floor(Math.random() * archetypes.length)];
+                document.getElementById('resultConstellation').textContent = randomResult.constellation;
+                const abilitiesContainer = document.getElementById('resultAbilities');
+                abilitiesContainer.innerHTML = '';
+                randomResult.abilities.forEach(ability => {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center space-x-3 bg-white/10 p-3 rounded-lg';
+                    el.innerHTML = `<span class="text-2xl">${ability.icon}</span><span class="font-medium text-white">${ability.name}</span>`;
+                    abilitiesContainer.appendChild(el);
+                });
+                document.getElementById('resultMission').textContent = randomResult.mission;
+                document.getElementById('resultQuote').textContent = randomResult.quote;
+            }
+
+            // --- EVENT BINDING ---
+            function bindDynamicEvents() {
+                document.querySelectorAll('.weight-slider').forEach(slider => {
+                    slider.addEventListener('input', e => {
+                        const valueSpan = e.target.parentElement.querySelector('.slider-value');
+                        if (valueSpan) valueSpan.textContent = e.target.value;
+                    });
+                });
+                document.querySelectorAll('.next-step-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        if (isProcessing) return;
+                        if (!validateCurrentStep()) return;
+                        if (currentStep < STEPS_DATA.length - 1) {
+                            isProcessing = true;
+                            goToStep(currentStep + 1);
+                            setTimeout(() => { isProcessing = false; }, 500);
+                        }
+                    });
+                });
+                const submitBtn = document.getElementById('submitButton');
+                if (submitBtn) {
+                    submitBtn.addEventListener('click', () => {
+                        if (isProcessing) return;
+                        if (!validateCurrentStep()) return;
+                        isProcessing = true;
+                        submitBtn.disabled = true;
+                        showScreen(processingScreen);
+                        const texts = ["Oracle đang lắng nghe các vì sao...", "Đang kết nối với các dải ngân hà...", "Giải mã tín hiệu vũ trụ...", "Đang định hình chòm sao năng lực của bạn..."];
+                        let textIndex = 0;
+                        processingText.textContent = texts[textIndex];
+                        const textInterval = setInterval(() => {
+                            textIndex = (textIndex + 1) % texts.length;
+                            processingText.textContent = texts[textIndex];
+                        }, 1500);
+                        setTimeout(() => {
+                            clearInterval(textInterval);
+                            generateOracleResult();
+                            showScreen(resultScreen);
+                            submitBtn.disabled = false;
+                        }, 5000);
+                    });
+                }
+            }
+            
+            // --- INITIALIZATION ---
+            startButton.addEventListener('click', () => {
+                showScreen(inputScreen);
+                resetApp();
+            });
+            retryButton.addEventListener('click', () => {
+                showScreen(welcomeScreen);
+            });
+            shareButton.addEventListener('click', () => {
+                showAlert('Tính năng chia sẻ đang được các tinh tú phát triển! ✨');
+            });
+            
+            createStarryNight();
+            buildInputSteps();
+        });
+    </script>
+</body>
+</html>
